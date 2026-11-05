@@ -1,0 +1,101 @@
+﻿import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score
+)
+     
+
+
+df = pd.read_csv(r"/content/drive/MyDrive/diabetes.csv")
+     
+
+
+print("First five rows:")
+print(df.head())
+
+
+print("\nDataset shape:", df.shape)
+print("\nMissing values:\n", df.isnull().sum())
+
+
+
+
+X = df.drop("Outcome", axis=1)
+y = df["Outcome"]
+
+
+# 3. Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.20,
+    random_state=42,
+    stratify=y
+)
+    
+
+
+scaler = StandardScaler()
+
+
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+
+    
+
+
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+
+
+y_pred = knn.predict(X_test)
+
+
+    
+
+
+cm = confusion_matrix(y_test, y_pred, labels=[0, 1])
+
+
+plt.figure(figsize=(6, 4))
+
+
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=["No Diabetes", "Diabetes"],
+    yticklabels=["No Diabetes", "Diabetes"]
+)
+
+
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("KNN Confusion Matrix")
+plt.show()
+
+
+
+
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred, zero_division=0)
+recall = recall_score(y_test, y_pred, zero_division=0)
+
+
+# 8. Display results
+print("\nConfusion Matrix:")
+print(cm)
+
+
+print(f"\nAccuracy   : {accuracy:.4f} ({accuracy * 100:.2f}%)")
+print(f"Error Rate : {error_rate:.4f} ({error_rate * 100:.2f}%)")
+print(f"Precision  : {precision:.4f} ({precision * 100:.2f}%)")
+print(f"Recall     : {recall:.4f} ({recall * 100:.2f}%)")
