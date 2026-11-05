@@ -1,0 +1,42 @@
+﻿// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+contract Calculator{
+    uint a = 6;
+    uint b = 5;
+
+
+    function sum(uint _a,uint _b) public pure returns (uint){
+        return _a+_b;
+    }
+
+
+    function sub(uint _a,uint _b) public pure returns(uint){
+        require(_b<_a,"Negative Value");
+        return _a - _b;
+    }
+
+
+    function mul(uint _a,uint _b) public pure returns(uint){
+        return _a*_b;
+    }
+    function div(uint _a,uint _b) public pure returns (uint){
+        require(_b!=0,"Divide by Zero");
+        return _a/_b;
+    }
+
+
+    function getAdd() public view returns(uint){
+        return sum(a,b);
+    }
+    function getSub() public view returns (uint){
+        return sub(a,b);
+    }
+    function getMul() public view returns(uint){
+        return mul(a,b);
+    }
+    function getDiv() public view returns (uint){
+        return div(a,b);
+    }
+
+
+}

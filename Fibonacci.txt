@@ -1,0 +1,38 @@
+﻿import java.util.*;
+public class Fibonacci {
+        
+        static int recursiveFib(int n) {
+                if(n==0)
+                        return 0;
+                if(n==1)
+                        return 1;
+                return recursiveFib(n-1)+recursiveFib(n-2);
+        }
+        
+        static void nonRecursiveFib(int n) {
+                int a=0,b=1,c;
+                for(int i=0;i<n;i++) {
+                        System.out.print(a+" ");
+                        c = a+b;
+                        a = b;
+                        b = c;
+                }
+                System.out.println();
+        }
+
+
+        public static void main(String[] args) {
+                // TODO Auto-generated method stub
+                Scanner sc = new Scanner(System.in);
+                int n = sc.nextInt();
+                System.out.println("Non-Recursive Fibonacci:");
+                nonRecursiveFib(n);
+                System.out.println("Recursive Fibonacci:");
+                for(int i=0;i<n;i++) {
+                        System.out.print(recursiveFib(i)+" ");
+                }
+                System.out.println();
+         }
+
+
+}

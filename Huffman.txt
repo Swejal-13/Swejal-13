@@ -1,0 +1,61 @@
+﻿package daa;
+import java.util.*;
+class Node{
+        char ch;
+        int freq;
+        Node left,right;
+        Node(char ch,int freq){
+                this.ch = ch;
+                this.freq = freq;
+                left = right = null;
+        }
+}
+public class Huffman {
+        
+        static void printCodes(Node root,String codes) {
+                if(root == null)
+                        return;
+                if(root.left == null && root.right==null) {
+                        System.out.println(root.ch+" "+(codes.isEmpty()?"0":codes));
+                        return;
+                }
+                printCodes(root.left,codes+"0");
+                printCodes(root.right,codes+"1");
+        }
+
+
+        public static void main(String[] args) {
+                // TODO Auto-generated method stub
+                Scanner sc = new Scanner(System.in);
+                System.out.print("Enter N:");
+                int n = sc.nextInt();
+                char[] chars = new char[n];
+                int[] freq = new int[n];
+                System.out.println("Enter Character and Frequency:");
+
+
+                for(int i = 0; i < n; i++) {
+                    chars[i] = sc.next().charAt(0);
+                    freq[i] = sc.nextInt();
+                }
+                
+                PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparing(node->node.freq));
+                for(int i=0;i<chars.length;i++) {
+                        pq.add(new Node(chars[i],freq[i]));
+                }
+                
+                while(pq.size()>1) {
+                        Node left = pq.poll();
+                        Node right = pq.poll();
+                        Node parent = new Node('\0',left.freq+right.freq);
+                        parent.left = left;
+                        parent.right = right;
+                        pq.add(parent);
+                }
+                Node root = pq.poll();
+                System.out.println("Huffmann Codes:");
+                printCodes(root," ");
+        }
+
+
+}
